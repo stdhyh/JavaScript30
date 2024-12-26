@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
 
@@ -58,10 +60,39 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    /**
+     * e.keyCode is deprecated, in real project, use e.key or e.code instead
+    **/
+    const parentDom = document.querySelector(".keys");
+    // you cannot parentDom.addEventListener, because div is not a Focused Element.
+    document.addEventListener("keydown", e => {
+      const keyCode = e.keyCode;
+      // '.key[data-key=70]' is not a valid selector.
+      // use '.key[data-key="70"]' instead
+      const keyDom = parentDom.querySelector(`.key[data-key="${keyCode}"]`);
+      keyDom.classList.add("playing");
+      keyDom.addEventListener("transitionend", e => {
+        keyDom.classList.remove("playing");
+      })
+      const audioDom = document.querySelector(`audio[data-key="${keyCode}"]`);
+      // if the key press frequently, reset the audio to init playing time. not so important
+      audioDom.currentTime = 0;
+      audioDom.play();
+    });
+    // The transitionend event is fired when a CSS transition has completed
+    // use it instead of listen keyup, which would be forced to end the transition
 
-</script>
+    /**
+    document.addEventListener("keyup", e => {
+      const keyCode = e.keyCode;
+      const keyDom = parentDom.querySelector(`.key[data-key="${keyCode}"]`);
+      keyDom.classList.remove("playing");
+    });
+    **/
+  </script>
 
 
 </body>
+
 </html>
