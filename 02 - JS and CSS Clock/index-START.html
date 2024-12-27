@@ -73,6 +73,7 @@
 
   <script>
     const BASE_DEG = 90;
+    let seconds = 0;
     const calSecondStep = seconds => {
       // 6 is second's base step
       return BASE_DEG + 6 * (seconds % 60);
@@ -91,6 +92,7 @@
     const minuteHand = document.querySelector(".min-hand");
     const hourHand = document.querySelector(".hour-hand");
     setInterval(() => {
+      seconds++;
       secondHand.style.transform = `rotate(${calSecondStep(seconds)}deg)`;
       minuteHand.style.transform = `rotate(${calMinuteStep(seconds)}deg)`;
       hourHand.style.transform = `rotate(${calHourStep(seconds)}deg)`;
