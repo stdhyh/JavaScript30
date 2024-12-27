@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
     </div>
+  </div>
 
 
   <style>
@@ -44,17 +46,18 @@
       position: relative;
       padding: 2rem;
       box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
+        0 0 0 4px rgba(0, 0, 0, 0.1),
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock-face {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
     }
 
     .hand {
@@ -63,13 +66,37 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: right;
+      transform: rotate(90deg);
     }
-
   </style>
 
   <script>
-
+    const BASE_DEG = 90;
+    const calSecondStep = seconds => {
+      // 6 is second's base step
+      return BASE_DEG + 6 * (seconds % 60);
+    }
+    const calMinuteStep = seconds => {
+      // 6 is minute's base step
+      // 3665 % 3600 / 60 = 1
+      return BASE_DEG + 6 * parseInt(seconds % 3600 / 60);
+    }
+    const calHourStep = seconds => {
+      // 30 is hour's base step
+      // 3665 % 86400 / 3600 = 1
+      return BASE_DEG + 30 * parseInt(seconds % (3600 * 24) / 3600);
+    }
+    const secondHand = document.querySelector(".second-hand");
+    const minuteHand = document.querySelector(".min-hand");
+    const hourHand = document.querySelector(".hour-hand");
+    setInterval(() => {
+      secondHand.style.transform = `rotate(${calSecondStep(seconds)}deg)`;
+      minuteHand.style.transform = `rotate(${calMinuteStep(seconds)}deg)`;
+      hourHand.style.transform = `rotate(${calHourStep(seconds)}deg)`;
+    }, 1000);
 
   </script>
 </body>
+
 </html>
